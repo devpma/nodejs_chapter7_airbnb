@@ -1,8 +1,9 @@
+
 const express = require('express');
 const router = express.Router();
-const multer = require('multer')
+const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
-const upload = multer({dest:'tmp'})
+const  upload = multer({ dest: '/tmp' });
 
 router.post('/upload', upload.array('photos', 100), async (req, res) => {
     try {
@@ -25,8 +26,9 @@ router.post('/upload', upload.array('photos', 100), async (req, res) => {
         })
     }
 })
+
 router.use('/user', require('./user'));
-router.use('/place', require('./place'));
+router.use('/places', require('./place'));
 router.use('/bookings', require('./booking'));
 
-module.exports = router
+module.exports = router;

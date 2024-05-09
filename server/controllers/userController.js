@@ -86,7 +86,7 @@ exports.updateUserDetails = async (req, res) => {
             user.password = password
         }
 
-        await updatedUser = user.save();
+        const updatedUser = await user.save()
         cookieToken(updatedUser, res)
 
     } catch(error) {

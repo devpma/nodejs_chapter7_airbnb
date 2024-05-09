@@ -1,14 +1,14 @@
-const e = require('express');
-const Place = require('../models/Place');
+const Place = require("../models/Place");
+
 exports.getPlaces = async (req, res) => {
     try {
         const places = await Place.find();
         res.status(200).json({
             places
         })
-    } catch(error) {
+    } catch (error) {
         res.status(500).json({
-            message: 'internal server error'
+            message: 'Internal Server Error',
         })
     }
 }
@@ -17,10 +17,11 @@ exports.userPlaces = async (req, res) => {
     try {
         const userData = req.user;
         const id = userData.id;
-        res.status(200).json(await Place.find({owner: id}))
-    } catch(error) {
+        res.status(200).json(await Place.find({ owner: id }))
+
+    } catch (error) {
         res.status(500).json({
-            message: 'internal server error'
+            message: 'Internal Server Error',
         })
     }
 }
@@ -28,43 +29,47 @@ exports.userPlaces = async (req, res) => {
 exports.singlePlace = async (req, res) => {
     try {
         const {id} = req.params;
-        const place = await Place.findId(id);
+        const place = await Place.findById(id);
 
-        if (!place) {
+        if(!place) {
             return res.status(400).json({
-                message: "place not found"
+                message: "Place Not Found"
             })
         }
 
         res.status(200).json({
             place
         })
+
     } catch (error) {
         res.status(500).json({
-            message: 'internal server error',
-        });
+            message: 'Internal Server Error',
+        })    
     }
 }
 
-exports.serchPlaces = async (req, res) => {
+exports.searchPlaces = async (req, res) => {
     try {
-        const serchWord = req.params.key;
-        if (searchedWord === '') return res.status(200).json(await Place.find());
+        const searchWord = req.params.key;
 
-        const searchMatches = await Place.find({ address: {$regex: searchedWord, $options: 'i'} })
-        res.status(200).json(searchMatches)
-    } catch(error) {
+        if(searchWord === '') return res.status(200).json(await Place.find());
+
+        const searchMatches = await Place.find({ address: {$regex: searchWord, $options: 'i'} })
+        
+        res.status(200).json(searchMatches);
+    } catch (error) {
         res.status(500).json({
-            message: 'internal server error'
+            message: "Internal Server Error",
         })
     }
 }
+
 
 exports.addPlace = async (req, res) => {
     try {
         const userData = req.user;
 
-        const{
+        const {
             title,
             address,
             addedPhotos,
@@ -85,13 +90,15 @@ exports.addPlace = async (req, res) => {
             extraInfo,
             maxGuests,
             price
-        })
+        });
         res.status(200).json({
             place
         })
-    } catch {
+
+
+    } catch (error) {
         res.status(500).json({
-            message: 'internal server error',
+            message: 'Internal Server Error',
             error: error
         })
     }

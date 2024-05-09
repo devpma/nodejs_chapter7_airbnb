@@ -1,19 +1,19 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
-const connectWithDB = require('./config/db');
 const cors = require('cors');
+const connectWithDB = require('./config/db');
 const cloudinary = require('cloudinary').v2;
-
 require('dotenv').config();
 
 const app = express();
 
-connectWithDB(); // 디비 연결
+connectWithDB();
+
 cloudinary.config({
-    cloud_name: process.env.ClOUDINARY_NAME,
-    api_key: process.env.ClOUDINARY_API_KEY,
-    api_secret: process.env.ClOUDINARY_API_SCRECT,
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
 })
 
 
@@ -30,10 +30,12 @@ app.use(express.json());
 
 app.use(cors({
     origin: process.env.CLIENT_URL,
-    Credential: true
-}));
+    credentials: true
+}))
 
-app.use('/' , require('./routes'));
+
+app.use('/', require('./routes'));
+
 
 app.listen(process.env.PORT || 8000, (err) => {
     if (err) {
